@@ -45,6 +45,11 @@ function zeigeIntro () {
         # # # # .
         `)
 }
+input.onPinTouchEvent(TouchPin.P1, input.buttonEventDown(), function () {
+    while (neuY <= 3 && !(led.point(neuX, neuY + 1))) {
+        neuY += 1
+    }
+})
 input.onButtonEvent(Button.A, input.buttonEventClick(), function () {
     if (neuX > 0) {
         if (!(led.point(neuX - 1, neuY))) {
@@ -98,6 +103,11 @@ function istZeileVoll (y: number) {
     }
     return true
 }
+input.onPinTouchEvent(TouchPin.P2, input.buttonEventDown(), function () {
+    while (neuY <= 3 && !(led.point(neuX, neuY + 1))) {
+        neuY += 1
+    }
+})
 function GameOver () {
     music.play(music.createSoundExpression(WaveShape.Square, 905, 1, 255, 106, 1000, SoundExpressionEffect.Tremolo, InterpolationCurve.Logarithmic), music.PlaybackMode.InBackground)
     basic.showIcon(IconNames.Skull)
@@ -110,8 +120,8 @@ let dotX = 0
 let istGameOver = false
 let Index = 0
 let Punktzahl = 0
-let neuY = 0
 let neuX = 0
+let neuY = 0
 zeigeIntro()
 music.rest(music.beat(BeatFraction.Double))
 basic.showLeds(`
