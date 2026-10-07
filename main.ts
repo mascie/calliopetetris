@@ -54,7 +54,7 @@ input.onButtonEvent(Button.A, input.buttonEventClick(), function () {
 })
 function gibPunkte (num: number) {
     Punktzahl += num
-    basic.setLedColors(basic.rgb(0, Punktzahl * 64, 0), basic.rgb(0, (Punktzahl - 4) * 64, 0), basic.rgb(0, (Punktzahl - 8) * 64, 0))
+    basic.setLedColors(basic.rgb(0, Math.constrain(Punktzahl, 0, 4) * 63, 0), basic.rgb(0, Math.constrain(Punktzahl - 4, 0, 4) * 63, 0), basic.rgb(0, Math.constrain(Punktzahl - 8, 0, 4) * 63, 0))
     music.changeTempoBy(20)
     habIchGewonnen()
 }
@@ -124,7 +124,7 @@ basic.showLeds(`
 basic.forever(function () {
     Punktzahl = 0
     basic.setLedColors(0x000000, 0x000000, 0x000000)
-    music.setTempo(500)
+    music.setTempo(120)
     istGameOver = false
     while (!(istGameOver)) {
         dotX = -1
