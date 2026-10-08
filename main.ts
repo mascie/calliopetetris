@@ -46,25 +46,28 @@ function zeigeSpielende () {
 }
 function spieleTetris () {
     while (Spielstand < Siegpunkte && !(istGameOver)) {
-        dotX = -1
+        dotX = randint(0, 4)
         dotY = -1
-        neuX = randint(0, 4)
-        neuY = 0
-        while (neuY <= 4 && !(led.point(neuX, neuY))) {
+        while (true) {
             music.rest(music.beat(BeatFraction.Whole))
-            led.unplot(dotX, dotY)
-            led.plot(neuX, neuY)
-            dotY = neuY
-            dotX = neuX
+            neuX = dotX
             neuY = dotY + 1
+            if (neuY <= 4 && !(led.point(neuX, neuY))) {
+                led.unplot(dotX, dotY)
+                dotY = neuY
+                dotX = neuX
+                led.plot(dotX, dotY)
+            }
+            music.rest(music.beat(BeatFraction.Quarter))
+            if (!(dotY + 1 <= 4 && !(led.point(dotX, dotY + 1)))) {
+                break;
+            }
         }
-        music.rest(music.beat(BeatFraction.Eighth))
-        music.play(music.tonePlayable(60, music.beat(BeatFraction.Sixteenth)), music.PlaybackMode.UntilDone)
+        music.play(music.tonePlayable(60, music.beat(BeatFraction.Sixteenth)), music.PlaybackMode.InBackground)
         if (istZeileVoll(dotY)) {
             löscheZeile(dotY)
             gibPunkte(1)
         }
-        music.rest(music.beat(BeatFraction.Whole))
         if (dotY < 0) {
             istGameOver = true
         }
@@ -77,9 +80,11 @@ input.onLogoEvent(TouchButtonEvent.Touched, function () {
     }
 })
 input.onButtonEvent(Button.A, input.buttonEventClick(), function () {
-    if (neuX > 0) {
-        if (!(led.point(neuX - 1, neuY))) {
-            neuX += -1
+    if (dotX > 0) {
+        if (!(led.point(dotX - 1, dotY))) {
+            led.unplot(dotX, dotY)
+            dotX += -1
+            led.plot(dotX, dotY)
         }
     }
 })
@@ -96,9 +101,6 @@ function kopiereZeile (y: number) {
         }
     }
 }
-input.onButtonEvent(Button.AB, input.buttonEventClick(), function () {
-	
-})
 function SpielstandAufLED (Spielstand: number, numLED: number) {
     HelligkeitsStufen = Math.round(Siegpunkte / 3)
     R = Math.constrain(Spielstand - numLED * HelligkeitsStufen, 0, HelligkeitsStufen) * 20
@@ -107,9 +109,11 @@ function SpielstandAufLED (Spielstand: number, numLED: number) {
     return basic.rgb(R, G, B)
 }
 input.onButtonEvent(Button.B, input.buttonEventClick(), function () {
-    if (neuX < 4) {
-        if (!(led.point(neuX + 1, neuY))) {
-            neuX += 1
+    if (dotX < 4) {
+        if (!(led.point(dotX + 1, dotY))) {
+            led.unplot(dotX, dotY)
+            dotX += 1
+            led.plot(dotX, dotY)
         }
     }
 })
