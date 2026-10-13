@@ -40,8 +40,8 @@ function zeigeSpielende () {
         basic.pause(1000)
         basic.showString(" GAME OVER ", 50)
         basic.showNumber(Spielstand)
-        basic.pause(1000)
-        basic.showString(" BEST ", 150)
+        basic.pause(2000)
+        basic.showString(" BEST ", 50)
         basic.showNumber(Highscore)
         basic.pause(2000)
     } else {
@@ -49,6 +49,7 @@ function zeigeSpielende () {
         basic.showIcon(IconNames.Happy)
         basic.pause(2000)
         basic.showString(" GEWONNEN ", 50)
+        basic.showNumber(Spielstand)
         basic.pause(2000)
     }
 }
@@ -123,6 +124,7 @@ function kopiereZeile (y: number) {
         if (led.point(Index6, y - 1)) {
             led.plot(Index6, y)
             led.unplot(Index6, y - 1)
+            hatStapel = true
         }
     }
 }
@@ -137,12 +139,15 @@ input.onGesture(Gesture.Shake, function () {
     istGameOver = true
 })
 function kollabiereZeile (y: number) {
+    hatStapel = false
     i = y
     while (i > 0) {
         kopiereZeile(i)
         i += -1
     }
-    music.play(music.createSoundExpression(WaveShape.Square, 148, 66, 255, 0, 200, SoundExpressionEffect.Tremolo, InterpolationCurve.Linear), music.PlaybackMode.UntilDone)
+    if (hatStapel) {
+        music.play(music.createSoundExpression(WaveShape.Square, 148, 66, 255, 0, 200, SoundExpressionEffect.Tremolo, InterpolationCurve.Linear), music.PlaybackMode.UntilDone)
+    }
 }
 function begrüße () {
     basic.showLeds(`
@@ -233,6 +238,7 @@ let B = 0
 let G = 0
 let R = 0
 let HelligkeitsStufen = 0
+let hatStapel = false
 let neuesLevel = 0
 let altesLevel = 0
 let Speed = 0
@@ -246,7 +252,7 @@ let dotX = 0
 let Highscore = 0
 let Level = 0
 Level = 0
-Highscore = 3
+Highscore = 15
 begrüße()
 music.rest(music.beat(BeatFraction.Double))
 basic.showLeds(`
