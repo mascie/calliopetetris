@@ -30,7 +30,7 @@ function testeSpielstandLEDs () {
     }
 }
 input.onButtonEvent(Button.A, input.buttonEventDown(), function () {
-    if (dotX > 0 && (Spielstand2 < Siegpunkte && !(istGameOver))) {
+    if (dotX > 0) {
         if (!(led.point(dotX - 1, dotY))) {
             led.unplot(dotX, dotY)
             dotX += -1
@@ -70,6 +70,7 @@ function spieleTetris () {
             }
             music.rest(music.beat(BeatFraction.Quarter))
             if (!(dotY + 1 <= 4 && !(led.point(dotX, dotY + 1)))) {
+                music.setTempo(Speed)
                 break;
             }
         }
@@ -85,7 +86,7 @@ function spieleTetris () {
     zeigeSpielende()
 }
 input.onButtonEvent(Button.B, input.buttonEventDown(), function () {
-    if (dotX < 4 && (Spielstand2 < Siegpunkte && !(istGameOver))) {
+    if (dotX < 4) {
         if (!(led.point(dotX + 1, dotY))) {
             led.unplot(dotX, dotY)
             dotX += 1
@@ -94,9 +95,8 @@ input.onButtonEvent(Button.B, input.buttonEventDown(), function () {
     }
 })
 input.onLogoEvent(TouchButtonEvent.Touched, function () {
-    while (neuY <= 3 && !(led.point(neuX, neuY + 1))) {
-        neuY += 1
-    }
+    Speed = music.tempo()
+    music.setTempo(9999)
 })
 function gibPunkte (num: number) {
     Spielstand2 += num
@@ -161,6 +161,9 @@ function istZeileVoll (y: number) {
     }
     return true
 }
+input.onLogoEvent(TouchButtonEvent.Released, function () {
+    music.setTempo(Speed)
+})
 function initialisiereSpiel () {
     Spielstand2 = 0
     Siegpunkte = 18
@@ -173,11 +176,12 @@ let B = 0
 let G = 0
 let R = 0
 let HelligkeitsStufen = 0
+let Speed = 0
 let neuY = 0
 let neuX = 0
-let dotY = 0
-let istGameOver = false
 let Spielstand2 = 0
+let istGameOver = false
+let dotY = 0
 let dotX = 0
 let Siegpunkte = 0
 begrüße()
