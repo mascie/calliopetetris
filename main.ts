@@ -20,6 +20,7 @@ function löscheZeile (y: number) {
         led.unplot(Index5, y)
     }
     kollabiereZeile(y)
+    music.setTempo(Speed)
 }
 input.onButtonEvent(Button.A, input.buttonEventDown(), function () {
     if (dotX > 0) {
@@ -241,7 +242,6 @@ let HelligkeitsStufen = 0
 let hatStapel = false
 let neuesLevel = 0
 let altesLevel = 0
-let Speed = 0
 let neuY = 0
 let neuX = 0
 let Siegpunkte = 0
@@ -249,6 +249,7 @@ let istGameOver = false
 let Spielstand = 0
 let dotY = 0
 let dotX = 0
+let Speed = 0
 let Highscore = 0
 let Level = 0
 Level = 0
